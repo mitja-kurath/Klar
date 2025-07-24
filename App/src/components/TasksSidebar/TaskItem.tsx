@@ -14,7 +14,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 }) => {
   return (
     <div
-      className={`group flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-slate-700/30 ${
+      className={`group flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-slate-700/30 cursor-pointer ${
         task.completed ? 'opacity-60' : ''
       }`}
     >
