@@ -1,6 +1,9 @@
 spring:
   application:
     name: klar
+  data:
+    mongodb:
+      uri: ${MONGODB_DATABASE_URL}
   security:
     oauth2:
       client:
