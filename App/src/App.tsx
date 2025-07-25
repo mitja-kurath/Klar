@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from './components/StatusBar';
 import { CurrentTaskInput } from './components/CurrentTaskInput';
 import { TimerCircle } from './components/TimerCircle';
@@ -13,15 +13,16 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useTimer } from './hooks/useTimer';
 import { useTasks } from './hooks/useTasks';
+import { widgetService } from './services/widgetService';
 import "./App.css";
-
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth();
   const [currentTask, setCurrentTask] = useState('');
   const [isBlocking] = useState(false);
   const [newTask, setNewTask] = useState('');
   const [showTaskInput, setShowTaskInput] = useState(false);
-
+  const [showTimerWidget, setShowTimerWidget] = useState(false);
+  const [showTasksWidget, setShowTasksWidget] = useState(false);
   const {
     timeLeft,
     isActive,
@@ -34,7 +35,6 @@ function AppContent() {
     handlePause,
     handleStop
   } = useTimer();
-
   const {
     tasks,
     completedTasks,
@@ -44,60 +44,100 @@ function AppContent() {
     addTask,
     removeTask
   } = useTasks();
-
-  // Check for OAuth success parameter
+  useEffect(() => {
+    if (widgetService.isTimerWidgetOpen()) {
+      widgetService.updateTimerWidget({
+        timeLeft,
+        isActive,
+        isPaused,
+        isBreak,
+        currentTask
+      });
+    }
+  }, [timeLeft, isActive, isPaused, isBreak, currentTask]);
+  useEffect(() => {
+    if (widgetService.isTasksWidgetOpen()) {
+      widgetService.updateTasksWidget({
+        tasks,
+        completedTasks,
+        totalTasks
+      });
+    }
+  }, [tasks, completedTasks, totalTasks]);
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      try {
+        await widgetService.closeAllWidgets();
+      } catch (error) {
+        console.error('Failed to close widgets on app close:', error);
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      widgetService.closeAllWidgets().catch(console.error);
+    };
+  }, []);
   const urlParams = new URLSearchParams(window.location.search);
   const oauthSuccess = urlParams.get('success');
   const showSuccessPage = oauthSuccess === 'true';
-
-  // Check if this is an OAuth callback
   const isOAuthCallback = window.location.pathname === '/oauth/callback' || 
                           window.location.search.includes('code=');
-
   if (isOAuthCallback) {
     return <OAuthCallback />;
   }
-
   if (showSuccessPage) {
     return <AuthSuccess />;
   }
-
   if (isLoading) {
     return <LoadingScreen />;
   }
-
   if (!isAuthenticated) {
     return <LoginScreen />;
   }
-
   const handleAddTask = async () => {
     if (await addTask(newTask)) {
       setNewTask('');
       setShowTaskInput(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex transition-colors">
-      {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
         <StatusBar
           isBlocking={isBlocking}
           focusTimeToday={focusTimeToday}
           breaksToday={breaksToday}
+          isTimerWidgetActive={showTimerWidget}
+          isTasksWidgetActive={showTasksWidget}
+          onToggleTimerWidget={async () => {
+            if (showTimerWidget) {
+              await widgetService.closeTimerWidget();
+              setShowTimerWidget(false);
+            } else {
+              await widgetService.createTimerWidget();
+              setShowTimerWidget(true);
+            }
+          }}
+          onToggleTasksWidget={async () => {
+            if (showTasksWidget) {
+              await widgetService.closeTasksWidget();
+              setShowTasksWidget(false);
+            } else {
+              await widgetService.createTasksWidget();
+              setShowTasksWidget(true);
+            }
+          }}
         />
-
         <CurrentTaskInput
           currentTask={currentTask}
           onTaskChange={setCurrentTask}
         />
-
         <TimerCircle
           timeLeft={timeLeft}
           progress={progress}
           isBreak={isBreak}
         />
-
         <TimerControls
           isActive={isActive}
           isPaused={isPaused}
@@ -105,11 +145,8 @@ function AppContent() {
           onPause={handlePause}
           onStop={handleStop}
         />
-
         <CurrentTaskDisplay currentTask={currentTask} />
       </div>
-
-      {/* Tasks Sidebar */}
       <TasksSidebar
         tasks={tasks}
         completedTasks={completedTasks}
@@ -128,7 +165,6 @@ function AppContent() {
     </div>
   );
 }
-
 function App() {
   return (
     <AuthProvider>
@@ -138,5 +174,6 @@ function App() {
     </AuthProvider>
   );
 }
-
 export default App;
+
+

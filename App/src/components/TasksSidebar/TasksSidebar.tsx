@@ -3,7 +3,6 @@ import { AddTaskInput } from './AddTaskInput';
 import { TasksList } from './TasksList';
 import { StatsFooter } from './StatsFooter';
 import { Task, BreakStats } from '../../types';
-
 interface TasksSidebarProps {
   tasks: Task[];
   completedTasks: number;
@@ -19,7 +18,6 @@ interface TasksSidebarProps {
   onNewTaskChange: (task: string) => void;
   onToggleTaskInput: () => void;
 }
-
 export const TasksSidebar: React.FC<TasksSidebarProps> = ({
   tasks,
   completedTasks,
@@ -43,7 +41,6 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
         completionPercentage={completionPercentage}
         onToggleTaskInput={onToggleTaskInput}
       />
-
       {showTaskInput && (
         <AddTaskInput
           newTask={newTask}
@@ -51,13 +48,11 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
           onAddTask={onAddTask}
         />
       )}
-
       <TasksList
         tasks={tasks}
         onToggleTask={onToggleTask}
         onRemoveTask={onRemoveTask}
       />
-
       <StatsFooter
         focusTimeToday={focusTimeToday}
         breaksToday={breaksToday}
@@ -65,3 +60,5 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
     </div>
   );
 };
+
+

@@ -1,25 +1,19 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Theme } from '../types';
 import { useAuth } from './AuthContext';
-
 interface ThemeContextType {
   theme: Theme;
   actualTheme: 'light' | 'dark';
   setTheme: (theme: Theme) => void;
 }
-
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
 interface ThemeProviderProps {
   children: ReactNode;
 }
-
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const { settings, updateSettings } = useAuth();
-  const [theme, setThemeState] = useState<Theme>('light'); // Default to light theme
-  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light'); // Default to light
-
-  // Initialize theme from user settings or localStorage
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
   useEffect(() => {
     if (settings?.theme) {
       setThemeState(settings.theme);
@@ -28,13 +22,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       if (savedTheme) {
         setThemeState(savedTheme);
       } else {
-        // If no saved theme, default to light
         setThemeState('light');
       }
     }
   }, [settings]);
-
-  // Update actual theme based on theme setting and system preference
   useEffect(() => {
     const updateActualTheme = () => {
       if (theme === 'system') {
@@ -44,34 +35,22 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         setActualTheme(theme);
       }
     };
-
     updateActualTheme();
-
-    // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', updateActualTheme);
-
     return () => mediaQuery.removeEventListener('change', updateActualTheme);
   }, [theme]);
-
-  // Apply theme to document
   useEffect(() => {
     const root = document.documentElement;
-    
     if (actualTheme === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
   }, [actualTheme]);
-
   const setTheme = async (newTheme: Theme) => {
     setThemeState(newTheme);
-    
-    // Save to localStorage for non-authenticated users
     localStorage.setItem('theme', newTheme);
-    
-    // Save to backend for authenticated users
     if (settings) {
       try {
         await updateSettings({ theme: newTheme });
@@ -80,16 +59,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       }
     }
   };
-
   const value: ThemeContextType = {
     theme,
     actualTheme,
     setTheme,
   };
-
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
-
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
@@ -97,3 +73,6 @@ export const useTheme = (): ThemeContextType => {
   }
   return context;
 };
+
+
+

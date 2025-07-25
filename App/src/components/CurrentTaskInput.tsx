@@ -2,7 +2,6 @@ interface CurrentTaskInputProps {
   currentTask: string;
   onTaskChange: (task: string) => void;
 }
-
 export const CurrentTaskInput: React.FC<CurrentTaskInputProps> = ({
   currentTask,
   onTaskChange
@@ -22,3 +21,5 @@ export const CurrentTaskInput: React.FC<CurrentTaskInputProps> = ({
     </div>
   );
 };
+
+

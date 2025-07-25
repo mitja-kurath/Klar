@@ -2,13 +2,11 @@ import React from 'react';
 import { Target } from 'lucide-react';
 import { TaskItem } from './TaskItem';
 import { Task } from '../../types';
-
 interface TasksListProps {
   tasks: Task[];
   onToggleTask: (id: string) => void;
   onRemoveTask: (id: string) => void;
 }
-
 export const TasksList: React.FC<TasksListProps> = ({
   tasks,
   onToggleTask,
@@ -26,7 +24,6 @@ export const TasksList: React.FC<TasksListProps> = ({
           />
         ))}
       </div>
-      
       {tasks.length === 0 && (
         <div className="text-center py-12 text-slate-500">
           <Target className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -37,3 +34,5 @@ export const TasksList: React.FC<TasksListProps> = ({
     </div>
   );
 };
+
+

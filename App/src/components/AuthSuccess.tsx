@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-
 export const AuthSuccess: React.FC = () => {
   const { isLoading } = useAuth();
-
   useEffect(() => {
-    // Redirect to main app after a short delay
     const timer = setTimeout(() => {
       window.location.href = '/';
     }, 2000);
-
     return () => clearTimeout(timer);
   }, []);
-
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center">
       <div className="text-center">
@@ -26,3 +21,6 @@ export const AuthSuccess: React.FC = () => {
     </div>
   );
 };
+
+
+

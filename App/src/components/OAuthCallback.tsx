@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 export const OAuthCallback: React.FC = () => {
   useEffect(() => {
     const handleCallback = () => {
@@ -7,15 +6,12 @@ export const OAuthCallback: React.FC = () => {
       const code = urlParams.get('code');
       const state = urlParams.get('state');
       const error = urlParams.get('error');
-
       if (error) {
         console.error('OAuth error:', error);
         window.close();
         return;
       }
-
       if (code) {
-        // Send the code to the parent window
         if (window.opener) {
           window.opener.postMessage({
             type: 'OAUTH_SUCCESS',
@@ -26,10 +22,8 @@ export const OAuthCallback: React.FC = () => {
         }
       }
     };
-
     handleCallback();
   }, []);
-
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center">
       <div className="text-center">
@@ -39,3 +33,6 @@ export const OAuthCallback: React.FC = () => {
     </div>
   );
 };
+
+
+

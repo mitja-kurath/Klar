@@ -1,11 +1,9 @@
 import React from 'react';
-
 interface AddTaskInputProps {
   newTask: string;
   onNewTaskChange: (task: string) => void;
   onAddTask: () => void;
 }
-
 export const AddTaskInput: React.FC<AddTaskInputProps> = ({
   newTask,
   onNewTaskChange,
@@ -16,7 +14,6 @@ export const AddTaskInput: React.FC<AddTaskInputProps> = ({
       onAddTask();
     }
   };
-
   return (
     <div className="p-4 border-b border-slate-700/50 bg-slate-800/20">
       <div className="flex gap-2">
@@ -39,3 +36,5 @@ export const AddTaskInput: React.FC<AddTaskInputProps> = ({
     </div>
   );
 };
+
+

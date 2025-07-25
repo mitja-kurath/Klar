@@ -1,6 +1,5 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-
 export const LoadingScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center">
@@ -12,3 +11,6 @@ export const LoadingScreen: React.FC = () => {
     </div>
   );
 };
+
+
+

@@ -1,12 +1,10 @@
 import { CheckCircle2, Circle, X } from 'lucide-react';
 import { Task } from '../../types';
-
 interface TaskItemProps {
   task: Task;
   onToggle: () => void;
   onRemove: () => void;
 }
-
 export const TaskItem: React.FC<TaskItemProps> = ({
   task,
   onToggle,
@@ -28,7 +26,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           <Circle className="w-5 h-5 text-slate-500 hover:text-slate-400" />
         )}
       </button>
-      
       <span className={`flex-1 text-sm ${
         task.completed 
           ? 'text-slate-500 line-through' 
@@ -36,7 +33,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       }`}>
         {task.text || task.title || ''}
       </span>
-      
       <button
         onClick={onRemove}
         className="opacity-0 group-hover:opacity-100 p-1 hover:bg-slate-600/50 rounded transition-all duration-200"
@@ -46,4 +42,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     </div>
   );
 };
+
+
 

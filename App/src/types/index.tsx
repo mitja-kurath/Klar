@@ -9,22 +9,18 @@ export interface Task {
     createdAt?: string;
     updatedAt?: string;
     completedAt?: string;
-    // Keep old interface for compatibility
     text?: string;
 }
-
 export interface BreakStats {
     taken: number;
     missed: number;
 }
-
 export interface TimerState {
     timeLeft: number;
     isActive: boolean;
     isPaused: boolean;
     isBreak: boolean;
 }
-
 export interface User {
     id: string;
     email: string;
@@ -35,7 +31,6 @@ export interface User {
     created_at?: string;
     updated_at?: string;
 }
-
 export interface UserSettings {
     id?: string;
     userId?: string;
@@ -48,7 +43,6 @@ export interface UserSettings {
     notificationsEnabled: boolean;
     soundEnabled?: boolean;
     theme: 'light' | 'dark' | 'system';
-    // Keep old interface for compatibility
     user_id?: string;
     work_duration?: number;
     short_break_duration?: number;
@@ -57,7 +51,6 @@ export interface UserSettings {
     notifications_enabled?: boolean;
     blocking_enabled?: boolean;
 }
-
 export interface PomodoroSession {
     id: string;
     userId?: string;
@@ -68,7 +61,6 @@ export interface PomodoroSession {
     startTime?: string;
     endTime?: string;
     createdAt?: string;
-    // Keep old interface for compatibility
     user_id?: string;
     task_id?: string;
     session_type?: 'work' | 'break';
@@ -77,7 +69,6 @@ export interface PomodoroSession {
     started_at?: string;
     ended_at?: string;
 }
-
 export interface AuthContextType {
     user: User | null;
     settings: UserSettings | null;
@@ -87,11 +78,11 @@ export interface AuthContextType {
     logout: () => Promise<void>;
     updateSettings: (settings: Partial<UserSettings>) => Promise<void>;
 }
-
 export interface ApiResponse<T> {
     data: T;
     message?: string;
     error?: string;
 }
-
 export type Theme = 'light' | 'dark' | 'system';
+
+

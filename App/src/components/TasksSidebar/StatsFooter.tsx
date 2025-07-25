@@ -1,11 +1,9 @@
 import { formatDuration } from '../../utils/timeUtils';
 import { BreakStats } from '../../types';
-
 interface StatsFooterProps {
   focusTimeToday: number;
   breaksToday: BreakStats;
 }
-
 export const StatsFooter: React.FC<StatsFooterProps> = ({
   focusTimeToday,
   breaksToday
@@ -33,3 +31,5 @@ export const StatsFooter: React.FC<StatsFooterProps> = ({
     </div>
   );
 };
+
+

@@ -1,12 +1,10 @@
 import { Target, Plus } from 'lucide-react';
-
 interface TasksHeaderProps {
   completedTasks: number;
   totalTasks: number;
   completionPercentage: number;
   onToggleTaskInput: () => void;
 }
-
 export const TasksHeader: React.FC<TasksHeaderProps> = ({
   completedTasks,
   totalTasks,
@@ -27,12 +25,10 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({
           <Plus className="w-5 h-5 text-slate-400" />
         </button>
       </div>
-      
       <div className="flex items-center justify-between text-sm text-slate-400">
         <span>{completedTasks} of {totalTasks} completed</span>
         <span>{completionPercentage}%</span>
       </div>
-      
       <div className="w-full bg-slate-700/50 rounded-full h-2 mt-2">
         <div 
           className="bg-gradient-to-r from-teal-500 to-emerald-500 h-2 rounded-full transition-all duration-500"
@@ -42,3 +38,5 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({
     </div>
   );
 };
+
+
