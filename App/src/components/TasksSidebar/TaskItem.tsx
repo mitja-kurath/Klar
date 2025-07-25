@@ -34,7 +34,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           ? 'text-slate-500 line-through' 
           : 'text-slate-300'
       }`}>
-        {task.text}
+        {task.text || task.title || ''}
       </span>
       
       <button
@@ -46,3 +46,4 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     </div>
   );
 };
+

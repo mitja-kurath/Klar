@@ -1,3 +1,7 @@
+app:
+  jwt:
+    secret: ${SECRET_KEY}
+
 spring:
   application:
     name: klar

@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.nio.channels.FileChannel;
 import java.util.Optional;
 
 @Service
@@ -52,5 +53,9 @@ public class UserService {
 
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
+    }
+
+    public Optional<User> findById(String userId) {
+        return userRepository.findById(userId);
     }
 }

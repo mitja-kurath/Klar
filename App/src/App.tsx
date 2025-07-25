@@ -5,13 +5,20 @@ import { TimerCircle } from './components/TimerCircle';
 import { TimerControls } from './components/TimerControls';
 import { CurrentTaskDisplay } from './components/CurrentTaskDisplay';
 import { TasksSidebar } from './components/TasksSidebar/TasksSidebar';
+import { LoginScreen } from './components/LoginScreen';
+import { LoadingScreen } from './components/LoadingScreen';
+import { AuthSuccess } from './components/AuthSuccess';
+import { OAuthCallback } from './components/OAuthCallback';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { useTimer } from './hooks/useTimer';
 import { useTasks } from './hooks/useTasks';
 import "./App.css";
 
-function App() {
+function AppContent() {
+  const { isAuthenticated, isLoading } = useAuth();
   const [currentTask, setCurrentTask] = useState('');
-  const [isBlocking, setIsBlocking] = useState(false);
+  const [isBlocking] = useState(false);
   const [newTask, setNewTask] = useState('');
   const [showTaskInput, setShowTaskInput] = useState(false);
 
@@ -38,16 +45,40 @@ function App() {
     removeTask
   } = useTasks();
 
-  const handleAddTask = () => {
-    if (addTask(newTask)) {
+  // Check for OAuth success parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const oauthSuccess = urlParams.get('success');
+  const showSuccessPage = oauthSuccess === 'true';
+
+  // Check if this is an OAuth callback
+  const isOAuthCallback = window.location.pathname === '/oauth/callback' || 
+                          window.location.search.includes('code=');
+
+  if (isOAuthCallback) {
+    return <OAuthCallback />;
+  }
+
+  if (showSuccessPage) {
+    return <AuthSuccess />;
+  }
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return <LoginScreen />;
+  }
+
+  const handleAddTask = async () => {
+    if (await addTask(newTask)) {
       setNewTask('');
       setShowTaskInput(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex">
-
+    <div className="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex transition-colors">
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
         <StatusBar
@@ -95,6 +126,16 @@ function App() {
         onToggleTaskInput={() => setShowTaskInput(!showTaskInput)}
       />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
