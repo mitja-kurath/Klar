@@ -207,16 +207,6 @@ npm run tauri build
 4. **Start Timer** - Click play to begin your 25-minute focus session
 5. **Take Breaks** - Follow the Pomodoro technique with automatic break reminders
 
-### ⚡ **Keyboard Shortcuts**
-
-| Key | Action |
-|-----|--------|
-| `Space` | Start/Pause timer |
-| `Escape` | Stop timer |
-| `Ctrl/Cmd + N` | New task |
-| `Ctrl/Cmd + W` | Toggle timer widget |
-| `Ctrl/Cmd + T` | Toggle tasks widget |
-
 ### 🎛️ **Advanced Features**
 
 #### **Floating Widgets**
