@@ -44,7 +44,7 @@ async fn timer_start(state: State<'_, AppState>, app: tauri::AppHandle) -> Resul
                     Ok(state) => state,
                     Err(_) => break,
                 };
-                if app_state.0.is_active && !app_state.0.is_paused {
+                if app_state.0.is_active && !app_state.0.is_paused { 
                     if app_state.0.time_left > 0 {
                         app_state.0.time_left -= 1;
                         if let Err(e) = app_clone.emit("timer-update", &app_state.0) {
